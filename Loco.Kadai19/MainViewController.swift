@@ -6,11 +6,7 @@ class MainViewController: UIViewController {
     private var tappedRow: Int?
     private var repository = CheckItemsRepository()
 
-    private var checkItems: [CheckItem] =
-        [
-        CheckItem(name: "apple2", isChecked: true),
-        CheckItem(name: "orange", isChecked: true)
-    ]
+    private var checkItems: [CheckItem] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +52,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         checkItems[indexPath.row].isChecked.toggle()
-        repository.set(item: checkItems)
+        _ = repository.save(item: checkItems)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
@@ -68,7 +64,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             checkItems.remove(at: indexPath.row)
-            repository.set(item: checkItems)
+            _ = repository.save(item: checkItems)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
@@ -77,7 +73,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 extension MainViewController: InputTextViewControllerDelegate {
     func saveAddAndReturn(fruitsName: String) {
         checkItems.append(CheckItem(name: fruitsName, isChecked: false))
-        repository.set(item: checkItems)
+        _ = repository.save(item: checkItems)
         dismiss(animated: true, completion: nil)
         tableView.reloadData()
     }
@@ -85,7 +81,7 @@ extension MainViewController: InputTextViewControllerDelegate {
     func saveEditAndReturn(fruitsName: String) {
         guard let tappedRow = tappedRow else { return }
         checkItems[tappedRow].name = fruitsName
-        repository.set(item: checkItems)
+       _ = repository.save(item: checkItems)
         dismiss(animated: true, completion: nil)
         tableView.reloadData()
     }

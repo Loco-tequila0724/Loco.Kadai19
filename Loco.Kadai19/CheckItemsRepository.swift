@@ -8,8 +8,7 @@ struct CheckItem: Codable {
 struct CheckItemsRepository {
     private let checkItemKey = "checkItemKey"
 
-    @discardableResult
-    func set(item: [CheckItem]) -> Bool {
+    func save(item: [CheckItem]) -> Bool {
         let jsonEncoder = JSONEncoder()
         jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
         guard let data = try? jsonEncoder.encode(item) else { return false }
